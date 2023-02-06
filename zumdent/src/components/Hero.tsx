@@ -1,71 +1,69 @@
-import {
-  createStyles,
-  Overlay,
-  Container,
-  Title,
-  Button,
-  Text,
-} from "@mantine/core";
+import { createStyles, Container, Text, Button, Group } from "@mantine/core";
+import { GithubIcon } from "@mantine/ds";
+
+const BREAKPOINT = "@media (max-width: 755px)";
 
 const useStyles = createStyles((theme) => ({
-  hero: {
-    height: "100%",
-    width: "88%",
-    // zIndex: -1000,
-    position: "absolute",
-    backgroundImage: "url(https://unsplash.com/photos/cADflhZzgyo)",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+  wrapper: {
+    position: "relative",
+    boxSizing: "border-box",
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
   },
 
-  container: {
-    height: 700,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
-    paddingBottom: theme.spacing.xl * 6,
-    zIndex: 1,
+  inner: {
     position: "relative",
+    paddingTop: 200,
+    paddingBottom: 120,
 
-    [theme.fn.smallerThan("sm")]: {
-      height: 500,
-      paddingBottom: theme.spacing.xl * 3,
+    [BREAKPOINT]: {
+      paddingBottom: 80,
+      paddingTop: 80,
     },
   },
 
   title: {
-    color: theme.white,
-    fontSize: 60,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    fontSize: 62,
     fontWeight: 900,
     lineHeight: 1.1,
+    margin: 0,
+    padding: 0,
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
 
-    [theme.fn.smallerThan("sm")]: {
-      fontSize: 40,
+    [BREAKPOINT]: {
+      fontSize: 42,
       lineHeight: 1.2,
-    },
-
-    [theme.fn.smallerThan("xs")]: {
-      fontSize: 28,
-      lineHeight: 1.3,
     },
   },
 
   description: {
-    color: theme.white,
-    maxWidth: 600,
+    marginTop: theme.spacing.xl,
+    fontSize: 24,
 
-    [theme.fn.smallerThan("sm")]: {
-      maxWidth: "100%",
-      fontSize: theme.fontSizes.sm,
+    [BREAKPOINT]: {
+      fontSize: 18,
+    },
+  },
+
+  controls: {
+    marginTop: theme.spacing.xl * 2,
+
+    [BREAKPOINT]: {
+      marginTop: theme.spacing.xl,
     },
   },
 
   control: {
-    marginTop: theme.spacing.xl * 1.5,
+    height: 54,
+    paddingLeft: 38,
+    paddingRight: 38,
 
-    [theme.fn.smallerThan("sm")]: {
-      width: "100%",
+    [BREAKPOINT]: {
+      height: 54,
+      paddingLeft: 18,
+      paddingRight: 18,
+      flex: 1,
     },
   },
 }));
@@ -74,28 +72,48 @@ export function Hero() {
   const { classes } = useStyles();
 
   return (
-    <div className={classes.hero}>
-      <Overlay
-        gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .65) 40%)"
-        opacity={1}
-        zIndex={0}
-      />
-      <Container className={classes.container}>
-        <Title className={classes.title}>Zambetul este important</Title>
-        <Text className={classes.description} size="xl" mt="xl">
-          Build fully functional accessible web applications faster than ever –
-          Mantine includes more than 120 customizable components and hooks to
-          cover you in any situation
+    <div className={classes.wrapper}>
+      <Container size={700} className={classes.inner}>
+        <h1 className={classes.title}>
+          Alege sa ai{" "}
+          <Text
+            component="span"
+            variant="gradient"
+            gradient={{ from: "blue", to: "cyan" }}
+            inherit
+          >
+            zambetul
+          </Text>{" "}
+          pe care l-ai visat!
+        </h1>
+
+        <Text className={classes.description} color="dimmed">
+          Build fully functional accessible web applications with ease – Mantine
+          includes more than 100 customizable components and hooks to cover you
+          in any situation
         </Text>
 
-        {/* <Button
-          variant="gradient"
-          size="xl"
-          radius="xl"
-          className={classes.control}
-        >
-          Get started
-        </Button> */}
+        <Group className={classes.controls}>
+          <Button
+            size="xl"
+            className={classes.control}
+            variant="gradient"
+            gradient={{ from: "blue", to: "cyan" }}
+          >
+            Programari
+          </Button>
+
+          {/* <Button
+            component="a"
+            href="https://github.com/mantinedev/mantine"
+            size="xl"
+            variant="default"
+            className={classes.control}
+            leftIcon={<GithubIcon size={20} />}
+          >
+            GitHub
+          </Button> */}
+        </Group>
       </Container>
     </div>
   );

@@ -13,6 +13,7 @@ import {
 } from "@tabler/icons";
 import { MantineLogo } from "@mantine/ds";
 import { useNavigate } from "react-router-dom";
+// import { ThemeChange } from "../components/Theme";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -153,20 +154,30 @@ export function NavbarSimple() {
         <a
           href="#"
           className={classes.link}
-          onClick={(event) => event.preventDefault()}
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/login");
+          }}
         >
           {/* <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} /> */}
-          <span>Change account</span>
+          <span>Log in</span>
         </a>
 
         <a
-          href="#"
+          href="/register"
           className={classes.link}
-          onClick={(event) => event.preventDefault()}
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/register");
+          }}
         >
           {/* <IconLogout className={classes.linkIcon} stroke={1.5} /> */}
-          <span>Logout</span>
+          <span>Register</span>
         </a>
+        {/* <a>
+          <ThemeChange />
+        </a> */}
+        {/* <ThemeChange /> */}
       </Navbar.Section>
     </Navbar>
   );
