@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { createStyles, Navbar, Group, Code, Text } from "@mantine/core";
-import {
-  IconBellRinging,
-  IconFingerprint,
-  IconKey,
-  IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
-  IconSwitchHorizontal,
-  IconLogout,
-} from "@tabler/icons";
+import { createStyles, Navbar, Group, Code, Text, Alert } from "@mantine/core";
+// import {
+//   IconBellRinging,
+//   IconFingerprint,
+//   IconKey,
+//   IconSettings,
+//   Icon2fa,
+//   IconDatabaseImport,
+//   IconReceipt2,
+//   IconSwitchHorizontal,
+//   IconLogout,
+// } from "@tabler/icons";
 import { MantineLogo } from "@mantine/ds";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 // import { ThemeChange } from "../components/Theme";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -94,9 +95,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: "/", label: "Home", icon: IconBellRinging },
-  { link: "/about", label: "About", icon: IconReceipt2 },
-  { link: "/pricing", label: "Pricing", icon: IconFingerprint },
+  { link: "/", label: "Home" },
+  { link: "/about", label: "About" },
+  { link: "/pricing", label: "Pricing" },
+  { link: "/contact", label: "Contact" },
   //   { link: "", label: "SSH Keys", icon: IconKey },
   //   { link: "", label: "Databases", icon: IconDatabaseImport },
   //   { link: "", label: "Authentication", icon: Icon2fa },
@@ -107,6 +109,19 @@ export function NavbarSimple() {
   let navigate = useNavigate();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Billing");
+  const [error, setError] = useState("");
+  const { currentUser, logout } = useAuth() || {};
+  console.log(currentUser);
+
+  const handleLogOut = async () => {
+    setError("");
+    if (logout)
+      try {
+        await logout();
+      } catch {
+        setError("Failed to log out!");
+      }
+  };
 
   //   const routeChange(newLink) = () => {
   //     let path = newLink;
@@ -131,54 +146,81 @@ export function NavbarSimple() {
   ));
 
   return (
-    <Navbar
-      pos="fixed"
-      top={0}
-      left={0}
-      height="100%"
-      width={{ sm: 205 }}
-      p="md"
-    >
-      <Navbar.Section grow>
-        <Group className={classes.header} position="apart">
-          {/* <MantineLogo size={28} /> */}
-          {/* <Code sx={{ fontWeight: 700 }}>v3.1.2</Code> */}
-          <Text fw={1000} c="blue">
-            ZumDent
-          </Text>
-        </Group>
-        {links}
-      </Navbar.Section>
-
-      <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => {
-            event.preventDefault();
-            navigate("/login");
-          }}
+    <>
+      {error !== "" && (
+        <Alert
+          title="Something went wrong!"
+          color="blue"
+          withCloseButton
+          pos="absolute"
+          bottom={5}
+          right={5}
+          w="300"
+          h="60"
+          onClose={() => setError("")}
         >
-          {/* <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} /> */}
-          <span>Log in</span>
-        </a>
+          {error}
+        </Alert>
+      )}
+      <Navbar
+        pos="fixed"
+        top={0}
+        left={0}
+        height="100%"
+        width={{ sm: 205 }}
+        p="md"
+      >
+        <Navbar.Section grow>
+          <Group className={classes.header} position="apart">
+            {/* <MantineLogo size={28} /> */}
+            {/* <Code sx={{ fontWeight: 700 }}>v3.1.2</Code> */}
+            <Text fw={1000} c="blue">
+              ZumDent
+            </Text>
+          </Group>
+          {links}
+        </Navbar.Section>
 
-        <a
-          href="/register"
-          className={classes.link}
-          onClick={(event) => {
-            event.preventDefault();
-            navigate("/register");
-          }}
-        >
-          {/* <IconLogout className={classes.linkIcon} stroke={1.5} /> */}
-          <span>Register</span>
-        </a>
-        {/* <a>
+        <Navbar.Section className={classes.footer}>
+          {currentUser && <p>{currentUser.email}</p>}
+          {currentUser && currentUser.email ? (
+            <a href="/" className={classes.link} onClick={handleLogOut}>
+              {/* <IconLogout className={classes.linkIcon} stroke={1.5} /> */}
+              <span>Logout</span>
+            </a>
+          ) : (
+            <>
+              <a
+                href="#"
+                className={classes.link}
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigate("/login");
+                }}
+              >
+                {/* <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} /> */}
+                <span>Login</span>
+              </a>
+              <a
+                href="/register"
+                className={classes.link}
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigate("/register");
+                }}
+              >
+                {/* <IconLogout className={classes.linkIcon} stroke={1.5} /> */}
+                <span>Register</span>
+              </a>
+            </>
+          )}
+
+          {/* <a>
           <ThemeChange />
         </a> */}
-        {/* <ThemeChange /> */}
-      </Navbar.Section>
-    </Navbar>
+          {/* <ThemeChange /> */}
+        </Navbar.Section>
+      </Navbar>
+    </>
   );
 }

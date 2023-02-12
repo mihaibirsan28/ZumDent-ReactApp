@@ -8,8 +8,11 @@ import {
   Title,
   Text,
   Anchor,
+  Alert,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import React, { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -51,51 +54,112 @@ const useStyles = createStyles((theme) => ({
 export function Login() {
   let navigate = useNavigate();
   const { classes } = useStyles();
+  const { login } = useAuth() || {};
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (email === "") setEmailError("Email is required!");
+    if (password === "") setPasswordError("Password is required!");
+
+    if (email !== "" && password !== "" && login)
+      try {
+        setError("");
+        setLoading(true);
+        await login(email, password);
+        navigate("/");
+        console.log(email, password);
+      } catch {
+        setError("Failed to log in");
+      }
+    setLoading(false);
+    console.log(email);
+    console.log(password);
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    setEmailError("");
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+    setPasswordError("");
+  };
+
   return (
-    <div className={classes.wrapper}>
-      <Paper className={classes.form} radius={0} p={30}>
-        <Title
-          order={2}
-          className={classes.title}
-          align="center"
-          mt="md"
-          mb={50}
+    <>
+      {error !== "" && (
+        <Alert
+          title="Something went wrong!"
+          color="blue"
+          withCloseButton
+          pos="absolute"
+          top={5}
+          right={5}
+          w="300"
+          h="60"
+          onClose={() => setError("")}
         >
-          ZumDent account
-        </Title>
-
-        <TextInput
-          label="Email address"
-          placeholder="hello@gmail.com"
-          size="md"
-          required
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          size="md"
-          required
-        />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md">
-          Login
-        </Button>
-
-        <Text align="center" mt="md">
-          Don&apos;t have an account?{" "}
-          <Anchor<"a">
-            href="#"
-            weight={700}
-            onClick={(event) => {
-              event.preventDefault();
-              navigate("/register");
-            }}
+          {error}
+        </Alert>
+      )}
+      <div className={classes.wrapper}>
+        <Paper className={classes.form} radius={0} p={30}>
+          <Title
+            order={2}
+            className={classes.title}
+            align="center"
+            mt="md"
+            mb={50}
           >
-            Register
-          </Anchor>
-        </Text>
-      </Paper>
-    </div>
+            ZumDent account
+          </Title>
+          <form onSubmit={handleSubmit}>
+            <TextInput
+              value={email}
+              onChange={handleEmailChange}
+              label="Email address"
+              placeholder="hello@gmail.com"
+              size="md"
+              mt="md"
+              required
+            />
+            <PasswordInput
+              value={password}
+              onChange={handlePasswordChange}
+              label="Password"
+              placeholder="Your password"
+              mt="md"
+              size="md"
+              required
+            />
+            <Checkbox label="Keep me logged in" mt="xl" size="md" />
+            <Button fullWidth mt="xl" size="md" type="submit" loading={loading}>
+              Login
+            </Button>
+          </form>
+
+          <Text align="center" mt="md">
+            Don&apos;t have an account?{" "}
+            <Anchor<"a">
+              href="#"
+              weight={700}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/register");
+              }}
+            >
+              Register
+            </Anchor>
+          </Text>
+        </Paper>
+      </div>
+    </>
   );
 }

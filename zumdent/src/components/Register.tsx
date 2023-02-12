@@ -9,8 +9,12 @@ import {
   Text,
   Anchor,
   Input,
+  Alert,
 } from "@mantine/core";
+import React, { useState } from "react";
 import InputMask from "react-input-mask";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -51,61 +55,192 @@ const useStyles = createStyles((theme) => ({
 
 export function Register() {
   const { classes } = useStyles();
+  const { currentUser, signup } = useAuth() || {};
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [phone, setPhone] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordConfirmationError, setPasswordConfirmationError] =
+    useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // console.log("proba");
+  console.log(
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirmation,
+    phone
+  );
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (firstName === "") setFirstNameError("First name is required!");
+    if (lastName === "") setLastNameError("Last name is required!");
+    if (email === "") setEmailError("Email is required!");
+    if (password === "") setPasswordError("Password is required!");
+    if (passwordConfirmation === "")
+      setPasswordConfirmationError("Password confirmation is required!");
+    if (phone === "") setPhoneError("Phone is required!");
+
+    if (password && passwordConfirmation && password !== passwordConfirmation) {
+      return setError("Passwords do not match!");
+    }
+
+    if (
+      firstName !== "" &&
+      lastName !== "" &&
+      email !== "" &&
+      password !== "" &&
+      passwordConfirmation !== "" &&
+      phone !== "" &&
+      signup
+    )
+      try {
+        setError("");
+        setLoading(true);
+        await signup(firstName, lastName, email, password, phone);
+        navigate("/");
+      } catch {
+        setError("Failed to register!");
+      }
+    setLoading(false);
+  };
+
+  const handleFirstNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setFirstName(event.target.value);
+    setFirstNameError("");
+  };
+
+  const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(event.target.value);
+    setLastNameError("");
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    setEmailError("");
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+    setPasswordError("");
+  };
+
+  const handlePasswordConfirmationChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPasswordConfirmation(event.target.value);
+    setPasswordConfirmationError("");
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(event.target.value);
+    setPhoneError("");
+  };
+
   return (
-    <div className={classes.wrapper}>
-      <Paper className={classes.form} radius={0} p={30}>
-        <Title
-          order={2}
-          className={classes.title}
-          align="center"
-          mt="md"
-          mb={50}
+    <>
+      {error !== "" && (
+        <Alert
+          title="Something went wrong!"
+          color="blue"
+          withCloseButton
+          pos="absolute"
+          top={5}
+          right={5}
+          w="300"
+          h="60"
+          onClose={() => setError("")}
         >
-          Create your ZumDent account
-        </Title>
+          {error}
+        </Alert>
+      )}
+      <div className={classes.wrapper}>
+        {/* <form onSubmit={handleSubmit} className={classes.form}> */}
+        <Paper className={classes.form} radius={0} p={30}>
+          <Title
+            order={2}
+            className={classes.title}
+            align="center"
+            mt="md"
+            mb={50}
+          >
+            Create your ZumDent account
+          </Title>
+          <form onSubmit={handleSubmit}>
+            <TextInput
+              value={firstName}
+              onChange={handleFirstNameChange}
+              label="First name"
+              placeholder="Ion"
+              size="md"
+              required
+            />
+            <TextInput
+              value={lastName}
+              onChange={handleLastNameChange}
+              label="Last name"
+              placeholder="Popescu"
+              size="md"
+              mt="md"
+              required
+            />
+            <TextInput
+              value={email}
+              onChange={handleEmailChange}
+              label="Email address"
+              placeholder="hello@gmail.com"
+              size="md"
+              mt="md"
+              required
+            />
+            <PasswordInput
+              value={password}
+              onChange={handlePasswordChange}
+              label="Password"
+              placeholder="Your password"
+              mt="md"
+              size="md"
+              required
+            />
+            <PasswordInput
+              value={passwordConfirmation}
+              onChange={handlePasswordConfirmationChange}
+              label="Confirm password"
+              placeholder="Your password"
+              mt="md"
+              size="md"
+              required
+            />
+            <Input.Wrapper label="Your phone" required mt="xl" size="md">
+              <Input
+                value={phone}
+                onChange={handlePhoneChange}
+                component={InputMask}
+                mask="+407 (99) 999-999"
+                placeholder="Your phone"
+              />
+            </Input.Wrapper>
+            <Checkbox label="Keep me logged in" mt="xl" size="md" />
+            <Button fullWidth mt="xl" size="md" type="submit" loading={loading}>
+              Register
+            </Button>
+          </form>
 
-        <TextInput label="First name" placeholder="Ion" size="md" required />
-        <TextInput
-          label="Second name"
-          placeholder="Popescu"
-          size="md"
-          mt="md"
-          required
-        />
-        <TextInput
-          label="Email address"
-          placeholder="hello@gmail.com"
-          size="md"
-          mt="md"
-          required
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          size="md"
-          required
-        />
-        <PasswordInput
-          label="Confirm password"
-          placeholder="Your password"
-          mt="md"
-          size="md"
-          required
-        />
-        <Input.Wrapper label="Your phone" required mt="xl" size="md">
-          <Input
-            component={InputMask}
-            mask="+407 (99) 999-999"
-            placeholder="Your phone"
-          />
-        </Input.Wrapper>
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md">
-          Register
-        </Button>
-
-        {/* <Text align="center" mt="md">
+          {/* <Text align="center" mt="md">
           Don&apos;t have an account?{" "}
           <Anchor<"a">
             href="#"
@@ -115,7 +250,11 @@ export function Register() {
             Register
           </Anchor>
         </Text> */}
-      </Paper>
-    </div>
+        </Paper>
+        {/* </form> */}
+      </div>
+    </>
   );
 }
+
+//7777777777777777777777777777777777

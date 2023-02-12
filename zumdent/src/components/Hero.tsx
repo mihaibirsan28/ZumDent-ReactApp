@@ -1,5 +1,6 @@
 import { createStyles, Container, Text, Button, Group } from "@mantine/core";
 import { GithubIcon } from "@mantine/ds";
+import { useNavigate } from "react-router-dom";
 
 const BREAKPOINT = "@media (max-width: 755px)";
 
@@ -70,21 +71,22 @@ const useStyles = createStyles((theme) => ({
 
 export function Hero() {
   const { classes } = useStyles();
+  let navigate = useNavigate();
 
   return (
     <div className={classes.wrapper}>
       <Container size={700} className={classes.inner}>
         <h1 className={classes.title}>
-          Alege sa ai{" "}
+          Choose to have the{" "}
           <Text
             component="span"
             variant="gradient"
             gradient={{ from: "blue", to: "cyan" }}
             inherit
           >
-            zambetul
+            smile
           </Text>{" "}
-          pe care l-ai visat!
+          you dreamed of!
         </h1>
 
         <Text className={classes.description} color="dimmed">
@@ -99,8 +101,12 @@ export function Hero() {
             className={classes.control}
             variant="gradient"
             gradient={{ from: "blue", to: "cyan" }}
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/contact");
+            }}
           >
-            Programari
+            Contact us
           </Button>
 
           {/* <Button
