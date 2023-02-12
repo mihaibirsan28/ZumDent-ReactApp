@@ -1,0 +1,26 @@
+[
+  {
+    "id": 10,
+    "nume": "Dr. Popescu Mihnea",
+    "facultate": "Facultatea de Stomatologie, Universitatea de Medicină și Farmacie „Carol Davila”, București",
+    "an_absolvire": 2020,
+    "specializare": "Chirurgie Dento-Alveolara",
+    "descriere": "Consideră că elementele cela mai importante în relația cu pacientul sunt răbdarea, comunicarea și respectul."
+  },
+  {
+    "id": 11,
+    "nume": "Dr. Preduna Sabin",
+    "facultate": "Facultatea de Stomatologie, Universitatea de Medicină și Farmacie „Carol Davila”, București",
+    "an_absolvire": 2020,
+    "specializare": "Chirurgie Dento-Alveolara",
+    "descriere": "A ales stomatologia pentru că este o profesie practică și a contat mult îndemânarea sa."
+  },
+  {
+    "id": 12,
+    "nume": "Dr. Marinescu Larisa",
+    "facultate": "Facultatea de Stomatologie, Universitatea de Medicină și Farmacie „Carol Davila”, București",
+    "an_absolvire": 2005,
+    "specializare": "Asistent Medical",
+    "descriere": "Consideră că elementele cela mai importante în relația cu pacientul sunt răbdarea, comunicarea și respectul."
+  }
+]

@@ -6,6 +6,7 @@ const BREAKPOINT = "@media (max-width: 755px)";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
+    height: 849,
     position: "relative",
     boxSizing: "border-box",
     backgroundColor:
@@ -75,7 +76,7 @@ export function Hero() {
 
   return (
     <div className={classes.wrapper}>
-      <Container size={700} className={classes.inner}>
+      <Container size={800} className={classes.inner}>
         <h1 className={classes.title}>
           Choose to have the{" "}
           <Text
@@ -90,14 +91,17 @@ export function Hero() {
         </h1>
 
         <Text className={classes.description} color="dimmed">
-          Build fully functional accessible web applications with ease – Mantine
-          includes more than 100 customizable components and hooks to cover you
-          in any situation
+          ZumDent owns some of the most modern dental offices in Bucharest,
+          united in a Center for Implantology and Dental Aesthetics and offers
+          each patient personalized, high-quality dental services, as well as
+          long-term support for maintaining dental health and maintaining a
+          smile envied.
         </Text>
 
         <Group className={classes.controls}>
           <Button
             size="xl"
+            // left="200"
             className={classes.control}
             variant="gradient"
             gradient={{ from: "blue", to: "cyan" }}

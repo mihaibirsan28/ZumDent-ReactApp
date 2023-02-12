@@ -61,6 +61,7 @@ export function Login() {
   const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // const image = require("../assets/zumdent-backgroung.avig");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

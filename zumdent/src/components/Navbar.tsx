@@ -14,6 +14,7 @@ import { createStyles, Navbar, Group, Code, Text, Alert } from "@mantine/core";
 import { MantineLogo } from "@mantine/ds";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ThemeChange } from "./Theme";
 // import { ThemeChange } from "../components/Theme";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -182,6 +183,7 @@ export function NavbarSimple() {
         </Navbar.Section>
 
         <Navbar.Section className={classes.footer}>
+          <ThemeChange />
           {currentUser && <p>{currentUser.email}</p>}
           {currentUser && currentUser.email ? (
             <a href="/" className={classes.link} onClick={handleLogOut}>

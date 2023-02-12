@@ -48,6 +48,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     password: string,
     phone: string
   ) {
+    setDoc(doc(db, "users", email), {
+      savedMessage: [],
+    });
     return createUserWithEmailAndPassword(auth, email, password);
   }
 

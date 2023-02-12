@@ -90,7 +90,7 @@ const MOCKDATA = [
   { title: "Email", description: "zumdent@contactZumdent.com" },
   { title: "Phone", description: "+40 (777) 777 777" },
   { title: "Address", description: "Calea Dorobanti nr.11" },
-  { title: "Working hours", description: "8 a.m. – 11 p.m." },
+  { title: "Working hours", description: "8 a.m. – 6 p.m." },
 ];
 
 export function ContactIconsList({

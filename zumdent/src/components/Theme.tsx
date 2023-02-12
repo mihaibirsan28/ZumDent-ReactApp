@@ -5,7 +5,7 @@ import {
   Center,
   Box,
 } from "@mantine/core";
-import { IconSun, IconMoon } from "@tabler/icons";
+// import { IconSun, IconMoon } from '@tabler/icons';
 
 export function ThemeChange() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -20,7 +20,7 @@ export function ThemeChange() {
             value: "light",
             label: (
               <Center>
-                <IconSun />
+                {/* <IconSun size={16} stroke={1.5} /> */}
                 <Box ml={10}>Light</Box>
               </Center>
             ),
@@ -29,7 +29,7 @@ export function ThemeChange() {
             value: "dark",
             label: (
               <Center>
-                <IconMoon />
+                {/* <IconMoon size={16} stroke={1.5} /> */}
                 <Box ml={10}>Dark</Box>
               </Center>
             ),

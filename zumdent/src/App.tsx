@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -11,6 +11,12 @@ import RegisterPage from "./pages/RegisterPage";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import ContactPage from "./pages/ContactPage";
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+} from "@mantine/core";
+import PricingPage from "./pages/PricingPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +34,10 @@ const router = createBrowserRouter([
             <About />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/pricing",
+        element: <PricingPage />,
       },
       {
         path: "/contact",
@@ -50,10 +60,24 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <ColorSchemeProvider
+          colorScheme={colorScheme}
+          toggleColorScheme={toggleColorScheme}
+        >
+          <MantineProvider
+            theme={{ colorScheme }}
+            withGlobalStyles
+            withNormalizeCSS
+          >
+            <RouterProvider router={router} />
+          </MantineProvider>
+        </ColorSchemeProvider>
       </AuthProvider>
     </>
   );
