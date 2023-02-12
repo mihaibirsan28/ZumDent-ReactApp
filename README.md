@@ -1,2 +1,2 @@
 # ZumDent-ReactApp
-ReactJS project (Mantine)
+React project (Mantine)
